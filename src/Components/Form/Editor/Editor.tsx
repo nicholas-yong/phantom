@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Editor } from "react-draft-wysiwyg";
 import { ContentState, EditorState } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -8,19 +8,26 @@ import { FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react';
 import { StyledEditor } from './Editor.styled';
 
 export interface EditorControlProps {
-    onChange: any
+    onChange: (val: EditorState) => void
     /* Contains the HTML block value that we will transform into DraftJS content */
-    value: any
+    value: string
 }
 
 export const EditorControl: React.FC<EditorControlProps> = ( { onChange, value} ) => {
 
-    const blocksFromHTML = htmlToDraft(value)
+    // console.log(JSON.stringify(value))
 
-    const { contentBlocks, entityMap } = blocksFromHTML
-    const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap)
+    // const blocksFromHTML = htmlToDraft(value)
 
-    const [editorState, setEditorState] = useState(EditorState.createWithContent(contentState))
+    // const { contentBlocks, entityMap } = blocksFromHTML
+    // const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap)
+
+    const [editorState, setEditorState] = useState(EditorState.createEmpty())
+
+    // Bind onChange to setEditorState
+    useEffect(() => {
+        onChange(editorState)
+    }, [editorState])
     
 
     return (

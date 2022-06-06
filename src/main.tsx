@@ -6,8 +6,6 @@ import { Site } from './Components/Site/Site'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ChakraProvider>
-    <React.StrictMode>
       <Site />
-    </React.StrictMode>
   </ChakraProvider>
 )
