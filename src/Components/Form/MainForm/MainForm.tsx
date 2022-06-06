@@ -14,13 +14,17 @@ export const MainForm = () => {
             mainPicture: '',
             content: '',
             teaser: '',
-            tags: ''
+            tags: [''],
         }
     })
 
+    const formSubmit = (data, e) => {
+
+    }
+
     return (
     <Flex backgroundColor={"#FFFFFF"} h='fit-content' w='50%'>
-        <StyledForm onSubmit={() => handleSubmit}>
+        <StyledForm onSubmit={() => handleSubmit(formSubmit)}>
             <FormControl>
                 <FormLabel>Title</FormLabel>
                 <Controller
