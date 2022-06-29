@@ -1,32 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Editor } from "react-draft-wysiwyg";
-import { ContentState, EditorState } from 'draft-js';
+import { ContentState, convertToRaw, EditorState } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import htmlToDraft from 'html-to-draftjs'
+import draftToHtml from 'draftjs-to-html';
 import "./styling/Editor.css"
 import { FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react';
 import { StyledEditor } from './Editor.styled';
+import { ControllerRenderProps } from 'react-hook-form';
+import { BlogFormValues } from '../MainForm/MainForm';
 
 export interface EditorControlProps {
-    onChange: (val: EditorState) => void
-    /* Contains the HTML block value that we will transform into DraftJS content */
-    value: string
+    field: ControllerRenderProps<BlogFormValues, "content">
 }
 
-export const EditorControl: React.FC<EditorControlProps> = ( { onChange, value} ) => {
 
-    // console.log(JSON.stringify(value))
-
-    // const blocksFromHTML = htmlToDraft(value)
-
-    // const { contentBlocks, entityMap } = blocksFromHTML
-    // const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap)
+export const EditorControl: React.FC<EditorControlProps> = ( { field } ) => {
 
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
     // Bind onChange to setEditorState
     useEffect(() => {
-        onChange(editorState)
+        field.onChange(draftToHtml(convertToRaw(editorState.getCurrentContent())))
     }, [editorState])
     
 

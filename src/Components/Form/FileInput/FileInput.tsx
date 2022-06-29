@@ -14,7 +14,7 @@ export interface FileUploadProps {
 
 export const FileUpload: React.FC<FileUploadProps> = ({ name, placeholder, acceptedFileTypes, control, children, isRequired=false }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const {
+  const { 
     field: { ref, value, onChange, ...inputProps },
     fieldState: { invalid, isTouched, isDirty },
   } = useController({
@@ -34,13 +34,15 @@ export const FileUpload: React.FC<FileUploadProps> = ({ name, placeholder, accep
             <input type='file' 
                 accept={acceptedFileTypes} 
                 ref = {inputRef}
-                onChange = {(e) => onChange(e.target.files ? e.target.files[0]: undefined)} 
+                readOnly
+                onChange = {(e) => onChange(e.target.files ? e.target.files[0].name: undefined)} 
                 {...inputProps} 
                 style={{ display: 'none' }}/>
             <Input
               placeholder={placeholder || "Your file ..."}
               onClick={() => inputRef.current?.click()}
               defaultValue={value}
+              readOnly
             />
           </InputGroup>
           <FormErrorMessage>

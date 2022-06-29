@@ -1,5 +1,6 @@
 import { Button, Flex, FormControl, FormHelperText, FormLabel, Input } from '@chakra-ui/react';
 import { BaseSyntheticEvent, useEffect } from 'react';
+import { EditorState } from 'react-draft-wysiwyg';
 import { Controller, useForm, Field} from "react-hook-form"
 import { EditorControl } from '../Editor/Editor';
 import { FileUpload } from '../FileInput/FileInput';
@@ -19,7 +20,7 @@ export interface BlogFormValues
 
 export const MainForm = () => {
 
-    const { register, control, handleSubmit } = useForm<BlogFormValues>({
+    const { control, handleSubmit } = useForm<BlogFormValues>({
         defaultValues: {
             title: '',
             mainPicture: '',
@@ -31,21 +32,22 @@ export const MainForm = () => {
 
     const formSubmit = (data: BlogFormValues, e: BaseSyntheticEvent<object, any, any> | undefined) => {
         e?.preventDefault()
-        console.log(data)
+        
+        // We need to build a DTO, probably using the blog value types
+        
+
+
     }
 
 
     return (
     <Flex backgroundColor={"#FFFFFF"} h='fit-content' w='50%'>
-        <StyledForm onSubmit={() => handleSubmit(formSubmit)}>
-            <FormControl>
+        <StyledForm onSubmit={handleSubmit(formSubmit, () => {})}>
+            <FormControl isRequired>
                 <FormLabel>Title</FormLabel>
                 <Controller
                 name = {"title"}
                 control = {control}
-                rules = {{
-                    required: true
-                }}
                 render = {({ field }) => <Input {...field} />}
                 />
                 <FormHelperText>Title required</FormHelperText>
@@ -55,21 +57,17 @@ export const MainForm = () => {
                 placeholder = {"Blog Post Picture"}
                 acceptedFileTypes = {"image/*"}
                 control = {control}
-                isRequired = {true}
                 children = {<span>Upload the main picture here</span>}
             />
              <Controller
-                render = {({ field }) => <EditorControl {...field}/>}
+                render = {({ field }) => <EditorControl field = {field} />}
                 name = "content"
                 control = {control} />
-            <FormControl>
+            <FormControl isRequired>
                 <FormLabel>Teaser</FormLabel>
                 <Controller
                 name={"teaser"}
                 control={control}
-                rules = {{
-                    required: true
-                }}
                 render = {({ field }) => <Input {...field}/>}
                 />
             </FormControl>
